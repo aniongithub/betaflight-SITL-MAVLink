@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "betaflight_SITL",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/betaflight/obj/main/betaflight_SITL.elf",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/betaflight/obj/main",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "mavlink_listener",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/mavlink_listener.py",
+            "args": [
+                "--device",
+                "tcp:127.0.0.1:5761"
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}
