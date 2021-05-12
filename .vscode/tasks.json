@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build Betaflight-SITL",
             "type": "shell",
             "command": "make",
             "options": {
@@ -22,10 +22,4 @@
             },
         }        
     ]
-}
-{
-    "label": "build",
-    "suppressTaskName": true,
-    "isBuildCommand": true,
-    "args": ["make TARGET=SITL"]
 }
