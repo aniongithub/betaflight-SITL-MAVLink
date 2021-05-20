@@ -4,6 +4,7 @@ from __future__ import print_function
 import sys, os
 from optparse import OptionParser
 from pymavlink import mavutil
+import time
 
 def handle_heartbeat(msg):
 	mode = mavutil.mode_string_v10(msg)
@@ -82,18 +83,30 @@ def main():
 		sys.exit(1)
 
 	# create a mavlink serial instance
+	print(f"Connecting to {opts.device}...")
 	master = mavutil.mavlink_connection(opts.device, baud=opts.baudrate)
+	print("done")
 
-	# wait for the heartbeat msg to find the system ID
-	master.wait_heartbeat()
+	# Get some information !
+	# From: https://www.ardusub.com/developers/pymavlink.html
+	while True:
+		try:
+			print(master.recv_match().to_dict())
+		except:
+			pass
+		
+		time.sleep(0.1)	
 
-	print("got heartbeat")
+	# # wait for the heartbeat msg to find the system ID
+	# print(f"Waiting for heartbeat...")
+	# master.wait_heartbeat()
+	# print(f"Heartbeat received...")
 
-	# request data to be sent at the given rate
-	master.mav.request_data_stream_send(master.target_system, master.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, opts.rate, 1)
+	# # request data to be sent at the given rate
+	# master.mav.request_data_stream_send(master.target_system, master.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, opts.rate, 1)
 
-	# enter the data loop
-	read_loop(master)
+	# # enter the data loop
+	# read_loop(master)
 
 
 if __name__ == '__main__':

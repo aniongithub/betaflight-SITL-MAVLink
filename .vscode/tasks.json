@@ -11,7 +11,8 @@
                 "cwd": "${workspaceFolder}/betaflight"
             },
             "args": [
-                "TARGET=SITL"
+                "TARGET=SITL",
+                "DEBUG=GDB"
             ],
             "group": "build",
             "presentation": {
@@ -20,6 +21,7 @@
                 "panel": "new",
                 "clear": false
             },
-        }        
+            "problemMatcher": []
+        }
     ]
 }
