@@ -44,3 +44,25 @@ ENV DISABLE_MAVNATIVE=True
 RUN pip3 install pymavlink
 
 CMD cd /betaflight-sitl-mavlink/betaflight && make TARGET=SITL && obj/main/betaflight_SITL.elf
+
+# Install the betaflight configurator
+ARG BETAFLIGHT_CONFIGURATION_URL="https://github.com/betaflight/betaflight-configurator/releases/download/10.7.0/betaflight-configurator_10.7.0_amd64.deb"
+# Install tools and required packages
+RUN apt-get update &&\
+    apt-get install -y \
+        wget \
+        libgconf-2-4 \
+        xdg-utils \
+        libasound2 \
+        mesa-utils
+
+# nvidia docker runtime env
+ENV NVIDIA_VISIBLE_DEVICES \
+        ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+        ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,compat32,utility
+
+RUN wget -O /tmp/betaflight_configuration.deb $BETAFLIGHT_CONFIGURATION_URL &&\
+    mkdir /usr/share/desktop-directories &&\
+    dpkg -i /tmp/betaflight_configuration.deb &&\
+    ln -sfn /opt/betaflight/betaflight-configurator/betaflight-configurator /usr/local/bin/betaflight-configurator
